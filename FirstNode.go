@@ -41,7 +41,7 @@ func PutValue(w http.ResponseWriter, r *http.Request) {
 	}
 	cacheMap[key] = value
 	fmt.Println(cacheMap)
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 
 }
 

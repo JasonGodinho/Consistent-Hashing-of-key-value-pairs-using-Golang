@@ -27,8 +27,6 @@ func main() {
 	SecondNode := "http://localhost:3001/"
 	ThirdNode := "http://localhost:3002/"
 
-	//Sort the map
-
 	keys = append(keys, murmur3.Sum64([]byte(FirstNode)))
 	keys = append(keys, murmur3.Sum64([]byte(SecondNode)))
 	keys = append(keys, murmur3.Sum64([]byte(ThirdNode)))
@@ -91,18 +89,16 @@ func PutValue(w http.ResponseWriter, r *http.Request) {
 	//Create a request
 	req, err := http.NewRequest("PUT", Mybuffer.String(), nil)
 	if err != nil {
-		fmt.Println("error: body, _ := ioutil.ReadAll(resp.Body) -- line 592")
 		panic(err)
 	}
 	client1 := &http.Client{}
 	resp, err := client1.Do(req)
 	if err != nil {
-		fmt.Println("error: Unable to submit request")
 		panic(err)
 	}
 	defer resp.Body.Close()
 	w.WriteHeader(resp.StatusCode)
-	if resp.StatusCode != http.StatusCreated {
+	if resp.StatusCode != http.StatusOK {
 		fmt.Println("Data was not persisted")
 		panic(err.Error())
 	} else {
@@ -148,7 +144,6 @@ func RetrieveValue(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		MyoutputJSON, err := json.Marshal(MyResponse)
 		if err != nil {
-			w.Write([]byte(`{    "error": "Unable to marshal response.`))
 			panic(err.Error())
 		}
 		fmt.Println("Retrieved from node : ", address, " for key : ", key)
